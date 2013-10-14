@@ -8,7 +8,7 @@ Examples
 
 - mymail-**example.com**@example.com only accepts mail with example.com as sender
 - mymail-**.example.com**@example.com only accepts mail with *.example.com as sender
-- mymail-example.com+example.net@example.com only accepts mail with example.com or example.net as sender
+- mymail-**example.com+example.net**@example.com only accepts mail with example.com or example.net as sender
 
 Configuration
 -------------
