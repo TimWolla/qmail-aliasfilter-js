@@ -1,0 +1,18 @@
+{
+	"name": "qmail-aliasfilter",
+	"description": "",
+	"version": "1.0.0",
+	"homepage": "https://github.com/TimWolla/qmail-aliasfilter-js/",
+	"license": "MIT",
+	"author": {
+		"name": "Tim Düsterhus",
+		"url": "https://github.com/TimWolla/"
+	},
+	"bugs": {
+		"url": "https://github.com/TimWolla/qmail-aliasfilter-js/issues"
+	},
+	"dependencies": {
+		"mailparser": ">=0.3.6",
+		"coffee-script": ">=1.6.0"
+	}
+}
