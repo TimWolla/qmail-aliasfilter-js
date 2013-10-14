@@ -11,8 +11,20 @@
 	"bugs": {
 		"url": "https://github.com/TimWolla/qmail-aliasfilter-js/issues"
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/TimWolla/qmail-aliasfilter-js.git"
+	},
 	"dependencies": {
 		"mailparser": ">=0.3.6",
 		"coffee-script": ">=1.6.0"
-	}
+	},
+	"engines": {
+		"node": ">=0.8"
+	},
+	"keywords": [
+		"qmail",
+		"email",
+		"filter"
+	]
 }
