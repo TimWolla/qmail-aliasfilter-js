@@ -30,8 +30,9 @@ module.exports = (fromDomains, recipients, config) ->
 		if matches = recipient.match config.mymail
 			# abort if the domain group was not found
 			unless matches[1]?
-				log """Missing capturing group in mymail (found #{config.mymail})"""
-				process.exit 1
+				error = new Error """Missing capturing group in mymail (found #{config.mymail})"""
+				error.code = "EMISSINGGROUP"
+				throw error
 			
 			foundMyMail = yes
 			

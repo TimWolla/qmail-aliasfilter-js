@@ -60,8 +60,11 @@ mailparser.on 'end', (mail) ->
 		fromDomains = (from.address.substring (from.address.lastIndexOf '@') + 1 for from in mail.from)
 		recipients = (recipient.address for recipient in mail.to.concat (if config.ccValid and mail.cc? then mail.cc else [ ]))
 		
-		result = validator fromDomains, recipients, config
-			
+		try
+			result = validator fromDomains, recipients, config
+		catch e
+			log e
+			process.exit 1
 		if result
 			log "[Accepted] qmail-aliasfilter accepted an email from [ #{(from.address for from in mail.from)} ] to [ #{(recipient for recipient in recipients)} ]"
 			process.exit 0
