@@ -1,4 +1,4 @@
-qmail-aliasfilter-js
+qmail-aliasfilter-js [![Build Status](https://travis-ci.org/TimWolla/qmail-aliasfilter-js.png?branch=master)](https://travis-ci.org/TimWolla/qmail-aliasfilter-js)
 ====================
 
 qmail-aliasfilter filters incoming mail based on valid sender domains encoded into the receiving email address.
