@@ -87,7 +87,6 @@ mailparser.on 'end', (mail) ->
 							'^' + (escapeRegExp allowedDomain) + '$'
 					)
 					allowedRegex = new RegExp '(' + (allowed.join '|') + ')', 'i'
-					console.log allowedRegex
 					
 					toResult = do ->
 						switch config.multipleFromHandling
@@ -115,6 +114,7 @@ mailparser.on 'end', (mail) ->
 						when "validateAll"
 							# at least one recipient did not match -> return false
 							return false unless toResult
+			return true if foundMyMail
 			config.validIfNotFound
 			
 		if result
