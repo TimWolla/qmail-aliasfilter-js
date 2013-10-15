@@ -1,6 +1,6 @@
 {
 	"name": "qmail-aliasfilter",
-	"description": "",
+	"description": "qmail-aliasfilter filters incoming mail based on valid sender domains encoded into the receiving email address.",
 	"version": "1.0.1",
 	"homepage": "https://github.com/TimWolla/qmail-aliasfilter-js/",
 	"license": "MIT",
