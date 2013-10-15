@@ -114,7 +114,14 @@ mailparser.on 'end', (mail) ->
 						when "validateAll"
 							# at least one recipient did not match -> return false
 							return false unless toResult
-			return true if foundMyMail
+			if foundMyMail
+				switch config.multipleToHandling
+					when "validateOne"
+						# we would have early aborted by now if any mail was valid
+						return false
+					when "validateAll"
+						# we would have early aborted by now if any mail was invalid
+						return true
 			config.validIfNotFound
 			
 		if result
