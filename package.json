@@ -12,6 +12,7 @@
 		"url": "https://github.com/TimWolla/qmail-aliasfilter-js/issues"
 	},
 	"bin": "bin/qmail-aliasfilter",
+	"preferGlobal": true,
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/TimWolla/qmail-aliasfilter-js.git"
