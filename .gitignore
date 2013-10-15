@@ -1,6 +1,7 @@
 node_modules
 npm-debug.log
 actions.log
+coverage
 
 *.js
 !config.example.js

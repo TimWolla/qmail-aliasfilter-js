@@ -15,12 +15,20 @@
 		"type": "git",
 		"url": "https://github.com/TimWolla/qmail-aliasfilter-js.git"
 	},
+	"scripts": {
+		"test": "coffee -c *.coffee && istanbul cover _mocha -- --compilers coffee:coffee-script test"
+	},
 	"dependencies": {
 		"mailparser": ">=0.3.6",
 		"coffee-script": ">=1.6.0"
 	},
+	"devDependencies": {
+		"mocha": ">=1.0.0",
+		"should": ">=2.0.0",
+		"istanbul": ">=0.1.44"
+	},
 	"engines": {
-		"node": ">=0.8"
+		"node": ">=0.6"
 	},
 	"keywords": [
 		"qmail",
