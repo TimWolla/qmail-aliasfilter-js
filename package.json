@@ -11,6 +11,7 @@
 	"bugs": {
 		"url": "https://github.com/TimWolla/qmail-aliasfilter-js/issues"
 	},
+	"bin": "bin/qmail-aliasfilter",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/TimWolla/qmail-aliasfilter-js.git"
