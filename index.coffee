@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 mailparser = new (require 'mailparser').MailParser
 fs = require 'fs'
+validator = require './validator'
 
 try
 	config = require './config'
@@ -53,85 +54,22 @@ unless config.multipleToHandling in [ "validateAll", "validateOne" ]
 	log """Invalid value for multipleToHandling (expected one of [ "validateAll", "validateOne" ], found #{config.multipleToHandling}"""
 	process.exit 1
 
-escapeRegExp = (string) -> String(string).replace /([.*+?^=!:${}()|[\]\/\\])/g, '\\$1'
-
 # wait until we received the complete mail
 mailparser.on 'end', (mail) ->
 	if mail.from.length is 1 or config.multipleFromHandling in [ "validateAll", "validateOne" ]
 		fromDomains = (from.address.substring (from.address.lastIndexOf '@') + 1 for from in mail.from)
-		recipients = mail.to.concat (if config.ccValid and mail.cc? then mail.cc else [ ])
+		recipients = (recipient.address for recipient in mail.to.concat (if config.ccValid and mail.cc? then mail.cc else [ ]))
 		
-		result = do ->
-			foundMyMail = no
-			for recipient in recipients
-				if matches = recipient.address.match config.mymail
-					unless matches[1]?
-						log """Missing capturing group in mymail (found #{config.mymail})"""
-						process.exit 1
-						
-					foundMyMail = yes
-					
-					allowed = matches[1].split /\+/
-					allowed = (for allowedDomain in allowed
-						# *.example.*
-						if /^\.(.*\.)?$/.test allowedDomain
-							escapeRegExp allowedDomain
-						# *.example.com
-						else if /^\..*[^.]$/.test allowedDomain
-							(escapeRegExp allowedDomain) + '$'
-						# example.*
-						else if /^[^.].*\.$/.test allowedDomain
-							'^' + escapeRegExp allowedDomain
-						# example.com
-						else
-							'^' + (escapeRegExp allowedDomain) + '$'
-					)
-					allowedRegex = new RegExp '(' + (allowed.join '|') + ')', 'i'
-					
-					toResult = do ->
-						switch config.multipleFromHandling
-							# all domains have to match
-							when "validateAll"
-								for from in fromDomains
-									unless allowedRegex.test from
-										return false
-								true
-							# at least one domain has to match
-							when "validateOne"
-								for from in fromDomains
-									return true if allowedRegex.test from
-								false
-							# the domain has to match
-							when "drop"
-								if allowedRegex.test fromDomains[0]
-									true
-								else
-									false
-					switch config.multipleToHandling
-						when "validateOne"
-							# at least one recipient matched -> return true
-							return true if toResult
-						when "validateAll"
-							# at least one recipient did not match -> return false
-							return false unless toResult
-			if foundMyMail
-				switch config.multipleToHandling
-					when "validateOne"
-						# we would have early aborted by now if any mail was valid
-						return false
-					when "validateAll"
-						# we would have early aborted by now if any mail was invalid
-						return true
-			config.validIfNotFound
+		result = validator fromDomains, recipients, config
 			
 		if result
-			log "[Accepted] qmail-aliasfilter accepted an email from [ #{(from.address for from in mail.from)} ] to [ #{(recipient.address for recipient in recipients)} ]"
+			log "[Accepted] qmail-aliasfilter accepted an email from [ #{(from.address for from in mail.from)} ] to [ #{(recipient for recipient in recipients)} ]"
 			process.exit 0
 		else
-			log "[Rejected] qmail-aliasfilter rejected an email from [ #{(from.address for from in mail.from)} ] to [ #{(recipient.address for recipient in recipients)} ]"
+			log "[Rejected] qmail-aliasfilter rejected an email from [ #{(from.address for from in mail.from)} ] to [ #{(recipient for recipient in recipients)} ]"
 			process.exit 99
 	else
-		log "[Rejected] qmail-aliasfilter rejected an email from [ #{(from.address for from in mail.from)} ] to [ #{(recipient.address for recipient in recipients)} ]"
+		log "[Rejected] qmail-aliasfilter rejected an email from [ #{(from.address for from in mail.from)} ] to [ #{(recipient for recipient in recipients)} ]"
 		process.exit 99
 		
 process.stdin.pipe mailparser
