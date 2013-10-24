@@ -30,3 +30,11 @@ module.exports = {
 	logFile: __dirname + '/actions.log'// path to the log file
 };
 ```
+
+You may pass the path to the configuration file via the first command line argument:
+
+```
+|/path/to/qmail-aliasfilter /path/to/configuration
+```
+
+If the argument is omitted an existing `config.{js, coffee}` inside the same folder as the index.coffee is used.
