@@ -26,7 +26,14 @@ fs = require 'fs'
 validator = require './validator'
 
 try
-	config = require './config'
+	filename = "#{__dirname}/config"
+	
+	# configuration file was passed via `process.argv`
+	filename = (require 'path').resolve process.argv[2] if process.argv[2]?
+	
+	filename = fs.realpathSync filename
+	
+	config = require filename
 catch e
 	console.error """[#{do Date}] Cannot load config: #{e}"""
 	process.exit 1
